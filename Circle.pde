@@ -1,11 +1,5 @@
-class Circle {
-  float x;
-  float y;
+class Circle extends Shape {
   float rad;
-
-  float red;
-  float green;
-  float blue;
   
   Circle(float x, float y, float r) {
     this.x = x;
@@ -14,13 +8,7 @@ class Circle {
   }
   
   void draw() {
-    fill(red, green, blue);
-    circle(x, y, rad * 2);
-  }
-
-  void randomColor() {
-    red = random(20, 255);
-    green = random(200, 255);
-    blue = random(20, 255);
+    fill(this.red, this.green, this.blue);
+    circle(this.x, this.y, this.rad * 2);
   }
 }

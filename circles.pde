@@ -10,6 +10,10 @@ Mode mode = Mode.TOUCHING;
 
 ArrayList<Circle> circleList = new ArrayList<Circle>();
 
+float minR = random(20, 200);
+float minG = random(20, 200);
+float minB = random(20, 200);
+
 void nextMode() {
   reset();
 
@@ -54,7 +58,7 @@ void keyPressed() {
 
 void drawRandomCircles() {
   Circle c = new Circle(random(0,width), random(0,height), random(10, maxRadius));
-  c.randomColor();
+  c.randomColor(minR, minG, minB);
 
   c.draw();
 }
@@ -64,7 +68,7 @@ boolean drawCirclesNextToCircles() {
   
   if (!isOverlapping(c)) {
     circleList.add(c);
-    c.randomColor();
+    c.randomColor(minR, minG, minB);
     c.draw();
 
     return true;
@@ -90,6 +94,10 @@ boolean isOverlapping(Circle circleTest) {
 void reset() {
   background(0);
   circleList.clear();
+
+  minR = random(20, 200);
+  minG = random(20, 200);
+  minB = random(20, 200);
 }
 
 void drawTouchingCircles() {
@@ -114,7 +122,7 @@ boolean drawNewTouchingCircle() {
 
   if (r > 10) {
     circleList.add(c);
-    c.randomColor();
+    c.randomColor(minR, minG, minB);
     c.draw();
     return true;
   }
