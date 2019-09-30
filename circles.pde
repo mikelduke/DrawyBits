@@ -3,16 +3,23 @@ float maxRadius = 300;
 enum Mode {
   RANDOM,
   NEXTTO,
-  TOUCHING
+  TOUCHING,
+  GROWING,
+  RANDOM_SQUARES
 }
 
-Mode mode = Mode.TOUCHING;
+Mode mode = Mode.RANDOM_SQUARES;
 
 ArrayList<Circle> circleList = new ArrayList<Circle>();
 
 float minR = random(20, 200);
 float minG = random(20, 200);
 float minB = random(20, 200);
+
+Circle lastCircle;
+boolean isGrowing = false;
+
+DrawMode randomSquares = new RandomSquares();
 
 void nextMode() {
   reset();
@@ -22,12 +29,16 @@ void nextMode() {
   } else if (mode == Mode.NEXTTO) {
     mode = Mode.TOUCHING;
   } else if (mode == Mode.TOUCHING) {
+    mode = Mode.GROWING;
+  } else if (mode == Mode.GROWING) {
+    mode = Mode.RANDOM_SQUARES;
+  } else if (mode == Mode.RANDOM_SQUARES) {
     mode = Mode.RANDOM;
   }
 }
 
 void setup() {
-  // size(800, 600);
+  //  size(800, 600);
   fullScreen(P2D, 1);
   background(0);
 }
@@ -45,6 +56,10 @@ void draw() {
     reset();
   } else if (mode == Mode.TOUCHING) {
     drawTouchingCircles();
+  } else if (mode == Mode.GROWING) {
+    drawGrowingCircles();
+  } else if (mode == Mode.RANDOM_SQUARES) {
+    randomSquares.draw();
   }
 }
 
@@ -127,4 +142,33 @@ boolean drawNewTouchingCircle() {
     return true;
   }
   return false;
+}
+
+void drawGrowingCircles() {
+  float rMax = 300;
+
+  if (!isGrowing) {
+    float x = random(0,width);
+    float y = random(0,height);
+    float r = 50;
+
+    Circle c = new Circle(x ,y, r);
+    if (isOverlapping(c)) {
+      return;
+    }
+
+    c.randomColor(minR, minG, minB);
+    c.rad = 10;
+    c.draw();
+    lastCircle = c;
+    isGrowing = true;
+  } else if (isGrowing) {
+    if (!isOverlapping(lastCircle) && lastCircle.rad < rMax) {
+      lastCircle.rad += 10;
+      lastCircle.draw();
+    } else {
+      circleList.add(lastCircle);
+      isGrowing = false;
+    }
+  }
 }
