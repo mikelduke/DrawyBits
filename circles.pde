@@ -1,43 +1,25 @@
-float maxRadius = 300;
+DrawMode drawModes[] = new DrawMode[] {
+  new RandomCircles(),
+  new NonOverlappingCircles(),
+  new TouchingCircles(),
+  new GrowingCircles(),
+  new RandomSquares(),
+};
 
-enum Mode {
-  RANDOM,
-  NEXTTO,
-  TOUCHING,
-  GROWING,
-  RANDOM_SQUARES
-}
-
-Mode mode = Mode.RANDOM_SQUARES;
-
-ArrayList<Circle> circleList = new ArrayList<Circle>();
-
-float minR = random(20, 200);
-float minG = random(20, 200);
-float minB = random(20, 200);
-
-DrawMode randomCircles = new RandomCircles();
-DrawMode randomSquares = new RandomSquares();
-DrawMode growingCircles = new GrowingCircles();
-DrawMode touchingCircles = new TouchingCircles();
-DrawMode currentMode = randomSquares;
+int selectedMode = 0;
+DrawMode currentMode = drawModes[selectedMode];
 
 void nextMode() {
-  reset();
+  currentMode.reset();
 
-  if (mode == Mode.RANDOM) {
-    mode = Mode.NEXTTO;
-  } else if (mode == Mode.NEXTTO) {
-    mode = Mode.TOUCHING;
-  } else if (mode == Mode.TOUCHING) {
-    mode = Mode.GROWING;
-  } else if (mode == Mode.GROWING) {
-    mode = Mode.RANDOM_SQUARES;
-    currentMode = randomSquares;
-  } else if (mode == Mode.RANDOM_SQUARES) {
-    mode = Mode.RANDOM;
-    currentMode = randomCircles;
+  selectedMode++;
+
+  if (selectedMode >= drawModes.length) {
+    selectedMode = 0;
   }
+
+  currentMode = drawModes[selectedMode];
+  currentMode.reset();
 }
 
 void setup() {
@@ -47,54 +29,13 @@ void setup() {
 }
 
 void draw() {
-
-  if (mode == Mode.RANDOM) {
-    randomCircles.draw();
-  } else if (mode == Mode.NEXTTO) {
-    for (int i = 0; i < 10000; i++) {
-      if (drawCirclesNextToCircles()) {
-        return;
-      }
-    }
-    reset();
-  } else if (mode == Mode.TOUCHING) {
-    touchingCircles.draw();
-  } else if (mode == Mode.GROWING) {
-    growingCircles.draw();
-  } else if (mode == Mode.RANDOM_SQUARES) {
-    randomSquares.draw();
-  }
+  currentMode.draw();
 }
 
 void keyPressed() {
   if (key == 'c') {
-    reset();
+    currentMode.reset();
   } else if (key == ' ') {
     nextMode();
   }
-}
-
-boolean drawCirclesNextToCircles() {
-  Circle c = new Circle(random(0,width), random(0,height), random(10, maxRadius));
-  
-  if (!CircleUtil.isOverlapping(c, circleList)) {
-    circleList.add(c);
-    c.randomColor(minR, minG, minB);
-    c.draw();
-
-    return true;
-  }
-
-  return false;
-}
-
-void reset() {
-  background(0);
-  circleList.clear();
-
-  minR = random(20, 200);
-  minG = random(20, 200);
-  minB = random(20, 200);
-
-  currentMode.reset();
 }

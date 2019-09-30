@@ -1,4 +1,6 @@
 public class RandomCircles implements DrawMode {
+    float maxRadius = 300;
+    
     float minR = random(20, 200);
     float minG = random(20, 200);
     float minB = random(20, 200);
