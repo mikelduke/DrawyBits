@@ -1,8 +1,4 @@
-public class TouchingCircles implements DrawMode {
-    float minR = random(20, 200);
-    float minG = random(20, 200);
-    float minB = random(20, 200);
-
+public class TouchingCircles extends MinColorDrawMode implements DrawMode {
     int maxAttempts = 100000;
 
     ArrayList<Circle> circleList = new ArrayList<Circle>();
@@ -37,11 +33,7 @@ public class TouchingCircles implements DrawMode {
     }
 
     void reset() {
-        background(0);
+        super.reset();
         circleList.clear();
-
-        this.minR = random(20, 200);
-        this.minG = random(20, 200);
-        this.minB = random(20, 200);
     }
 }

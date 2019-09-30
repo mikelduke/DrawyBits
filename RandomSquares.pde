@@ -1,7 +1,4 @@
-public class RandomSquares implements DrawMode {
-    float minR = random(20, 200);
-    float minG = random(20, 200);
-    float minB = random(20, 200);
+public class RandomSquares extends MinColorDrawMode implements DrawMode {
     
     public void draw() {
         float w = random(10, width / 2);
@@ -12,12 +9,5 @@ public class RandomSquares implements DrawMode {
         Rectangle rect = new Rectangle(x, y, w, h);
         rect.randomColor(minR, minG, minB);
         rect.draw();
-    }
-
-    void reset() {
-        background(0);
-        this.minR = random(20, 200);
-        this.minG = random(20, 200);
-        this.minB = random(20, 200);
     }
 }

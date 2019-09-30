@@ -1,8 +1,4 @@
-public class GrowingCircles implements DrawMode {
-    float minR = random(20, 200);
-    float minG = random(20, 200);
-    float minB = random(20, 200);
-
+public class GrowingCircles extends MinColorDrawMode implements DrawMode {
     ArrayList<Circle> circleList = new ArrayList<Circle>();
     Circle lastCircle;
     boolean isGrowing = false;
@@ -36,13 +32,8 @@ public class GrowingCircles implements DrawMode {
         }
     }
 
-
     void reset() {
-        background(0);
+        super.reset();
         circleList.clear();
-
-        this.minR = random(20, 200);
-        this.minG = random(20, 200);
-        this.minB = random(20, 200);
     }
 }

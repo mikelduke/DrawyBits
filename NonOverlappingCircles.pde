@@ -1,9 +1,5 @@
-public class NonOverlappingCircles implements DrawMode {
+public class NonOverlappingCircles extends MinColorDrawMode implements DrawMode {
     float maxRadius = 300;
-    
-    float minR = random(20, 200);
-    float minG = random(20, 200);
-    float minB = random(20, 200);
 
     int maxAttempts = 10000;
 
@@ -34,11 +30,7 @@ public class NonOverlappingCircles implements DrawMode {
 
 
     void reset() {
-        background(0);
+        super.reset();
         circleList.clear();
-
-        this.minR = random(20, 200);
-        this.minG = random(20, 200);
-        this.minB = random(20, 200);
     }
 }
