@@ -44,5 +44,7 @@ void keyPressed() {
     nextMode();
   } else if (key == 'p') {
     isPaused = !isPaused;
+  } else if (key == 's') {
+    saveFrame("screenshots/gen-######.png");
   }
 }
