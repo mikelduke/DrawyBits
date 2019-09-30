@@ -4,10 +4,13 @@ DrawMode drawModes[] = new DrawMode[] {
   new TouchingCircles(),
   new GrowingCircles(),
   new RandomSquares(),
+  new NonOverlappingRectangles(),
 };
 
-int selectedMode = 0;
+int selectedMode = 5;
 DrawMode currentMode = drawModes[selectedMode];
+
+boolean isPaused = false;
 
 void nextMode() {
   currentMode.reset();
@@ -29,7 +32,9 @@ void setup() {
 }
 
 void draw() {
-  currentMode.draw();
+  if (!isPaused) {
+    currentMode.draw();
+  }
 }
 
 void keyPressed() {
@@ -37,5 +42,7 @@ void keyPressed() {
     currentMode.reset();
   } else if (key == ' ') {
     nextMode();
+  } else if (key == 'p') {
+    isPaused = !isPaused;
   }
 }
