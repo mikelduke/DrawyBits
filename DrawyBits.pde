@@ -5,9 +5,10 @@ DrawMode drawModes[] = new DrawMode[] {
   new GrowingCircles(),
   new RandomSquares(),
   new NonOverlappingRectangles(),
+  new ParametricsLines(),
 };
 
-int selectedMode = 5;
+int selectedMode = drawModes.length - 1;
 DrawMode currentMode = drawModes[selectedMode];
 
 boolean isPaused = false;

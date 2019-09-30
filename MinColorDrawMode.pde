@@ -10,6 +10,9 @@ abstract class MinColorDrawMode implements DrawMode {
     void reset() {
         background(0);
 
+        stroke(0);
+        strokeWeight(1);
+
         this.minR = random(min, max);
         this.minG = random(min, max);
         this.minB = random(min, max);
