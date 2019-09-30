@@ -16,11 +16,9 @@ float minR = random(20, 200);
 float minG = random(20, 200);
 float minB = random(20, 200);
 
-Circle lastCircle;
-boolean isGrowing = false;
-
 DrawMode randomCircles = new RandomCircles();
 DrawMode randomSquares = new RandomSquares();
+DrawMode growingCircles = new GrowingCircles();
 DrawMode currentMode = randomSquares;
 
 void nextMode() {
@@ -61,7 +59,7 @@ void draw() {
   } else if (mode == Mode.TOUCHING) {
     drawTouchingCircles();
   } else if (mode == Mode.GROWING) {
-    drawGrowingCircles();
+    growingCircles.draw();
   } else if (mode == Mode.RANDOM_SQUARES) {
     randomSquares.draw();
   }
@@ -78,7 +76,7 @@ void keyPressed() {
 boolean drawCirclesNextToCircles() {
   Circle c = new Circle(random(0,width), random(0,height), random(10, maxRadius));
   
-  if (!isOverlapping(c)) {
+  if (!CircleUtil.isOverlapping(c, circleList)) {
     circleList.add(c);
     c.randomColor(minR, minG, minB);
     c.draw();
@@ -87,20 +85,6 @@ boolean drawCirclesNextToCircles() {
   }
 
   return false;
-}
-
-boolean isOverlapping(Circle circleTest) {
-    for (int i = 0; i < circleList.size(); i++) {
-        Circle circle = circleList.get(i);
-        // https://stackoverflow.com/questions/8367512/how-do-i-detect-intersections-between-a-circle-and-any-other-circle-in-the-same
-        float aabb = pow(circleTest.x - circle.x, 2) + pow(circleTest.y - circle.y, 2);
-        float cc = pow(circleTest.rad + circle.rad, 2);
-
-        if (aabb <= cc) {
-            return true;
-        }
-    }
-    return false;
 }
 
 void reset() {
@@ -130,7 +114,7 @@ boolean drawNewTouchingCircle() {
   float rMax = 300;
 
   Circle c = new Circle(x ,y, r);
-  while (!isOverlapping(c) && r <= rMax) {
+  while (!CircleUtil.isOverlapping(c, circleList) && r <= rMax) {
     c = new Circle(x, y, r+= 1);
   }
 
@@ -141,33 +125,4 @@ boolean drawNewTouchingCircle() {
     return true;
   }
   return false;
-}
-
-void drawGrowingCircles() {
-  float rMax = 300;
-
-  if (!isGrowing) {
-    float x = random(0,width);
-    float y = random(0,height);
-    float r = 50;
-
-    Circle c = new Circle(x ,y, r);
-    if (isOverlapping(c)) {
-      return;
-    }
-
-    c.randomColor(minR, minG, minB);
-    c.rad = 10;
-    c.draw();
-    lastCircle = c;
-    isGrowing = true;
-  } else if (isGrowing) {
-    if (!isOverlapping(lastCircle) && lastCircle.rad < rMax) {
-      lastCircle.rad += 10;
-      lastCircle.draw();
-    } else {
-      circleList.add(lastCircle);
-      isGrowing = false;
-    }
-  }
 }
