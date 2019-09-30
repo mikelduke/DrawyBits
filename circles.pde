@@ -19,7 +19,9 @@ float minB = random(20, 200);
 Circle lastCircle;
 boolean isGrowing = false;
 
+DrawMode randomCircles = new RandomCircles();
 DrawMode randomSquares = new RandomSquares();
+DrawMode currentMode = randomSquares;
 
 void nextMode() {
   reset();
@@ -32,8 +34,10 @@ void nextMode() {
     mode = Mode.GROWING;
   } else if (mode == Mode.GROWING) {
     mode = Mode.RANDOM_SQUARES;
+    currentMode = randomSquares;
   } else if (mode == Mode.RANDOM_SQUARES) {
     mode = Mode.RANDOM;
+    currentMode = randomCircles;
   }
 }
 
@@ -46,7 +50,7 @@ void setup() {
 void draw() {
 
   if (mode == Mode.RANDOM) {
-    drawRandomCircles();
+    randomCircles.draw();
   } else if (mode == Mode.NEXTTO) {
     for (int i = 0; i < 10000; i++) {
       if (drawCirclesNextToCircles()) {
@@ -69,13 +73,6 @@ void keyPressed() {
   } else if (key == ' ') {
     nextMode();
   }
-}
-
-void drawRandomCircles() {
-  Circle c = new Circle(random(0,width), random(0,height), random(10, maxRadius));
-  c.randomColor(minR, minG, minB);
-
-  c.draw();
 }
 
 boolean drawCirclesNextToCircles() {
@@ -113,6 +110,8 @@ void reset() {
   minR = random(20, 200);
   minG = random(20, 200);
   minB = random(20, 200);
+
+  currentMode.reset();
 }
 
 void drawTouchingCircles() {
