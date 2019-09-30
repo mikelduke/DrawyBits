@@ -15,6 +15,7 @@ public class RandomSquares implements DrawMode {
     }
 
     void reset() {
+        background(0);
         this.minR = random(20, 200);
         this.minG = random(20, 200);
         this.minB = random(20, 200);

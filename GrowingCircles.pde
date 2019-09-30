@@ -38,6 +38,7 @@ public class GrowingCircles implements DrawMode {
 
 
     void reset() {
+        background(0);
         circleList.clear();
 
         this.minR = random(20, 200);
